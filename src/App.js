@@ -19,11 +19,10 @@ const List = ({ list }) => {
   })
 }
 
-const Search = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+const Search = ({ onSearch, searchTerm }) => {
+  
 
   const handleChange = event => {
-    setSearchTerm(event.target.value);
     onSearch(event);
   };
 
@@ -56,16 +55,24 @@ function App() {
     },
   ];
 
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   const handleSearch = event => {
-    console.log(event.target.value);
+    setSearchTerm(event.target.value);
   };
+
+  const searchedStories = stories.filter(function(story) {
+    return story.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div>
       <h1>Hello {getTitle('React')}</h1>
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} searchTerm={searchTerm} />
       <hr />
-      <List list={stories} />
+      <List list={searchedStories} />
     </div>
   );
 }
