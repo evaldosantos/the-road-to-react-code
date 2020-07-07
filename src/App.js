@@ -92,7 +92,13 @@ function App() {
     'React'
   );
 
-  const [stories, setStories] = React.useState(initialStories);
+  const getAsyncStories = () => new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ data: { stories: initialStories } })
+    }, 2000)
+  });
+
+  const [stories, setStories] = React.useState([]);
 
   const handleSearch = event => {
     setSearchTerm(event.target.value);
@@ -110,6 +116,12 @@ function App() {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
   });
+
+  React.useEffect(() => {
+    getAsyncStories().then(result => {
+      setStories(result.data.stories);
+    })
+  }, [])
 
   return (
     <div>
