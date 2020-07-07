@@ -33,13 +33,13 @@ const List = ({ list }) => {
 
 const InputWithLabel = ({
   id,
-  label,
+  children,
   value,
   type = 'text',
   onInputChange,
 }) => (
   <>
-    <label htmlFor={id}>{label}</label>
+    <label htmlFor={id}>{children}</label>
       &nbsp;
     <input
       id={id}
@@ -92,10 +92,11 @@ function App() {
       <h1>My Hacker Stories</h1>
       <InputWithLabel
         id="search"
-        label="Search"
         value={searchTerm}
         onInputChange={handleSearch}
-      />
+      >
+        <strong>Search</strong>
+      </InputWithLabel>
       <hr />
       <List list={searchedStories} />
     </div>
