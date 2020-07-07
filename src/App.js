@@ -37,18 +37,30 @@ const InputWithLabel = ({
   value,
   type = 'text',
   onInputChange,
-}) => (
-  <>
-    <label htmlFor={id}>{children}</label>
-      &nbsp;
-    <input
-      id={id}
-      type={type}
-      value={value}
-      onChange={onInputChange}
-    />
-  </>
-);
+  isFocused
+}) => {
+  const inputRef = React.useRef();
+
+  React.useEffect(() => {
+    if ( isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused])
+
+  return (
+    <>
+      <label htmlFor={id}>{children}</label>
+        &nbsp;
+      <input
+        ref={inputRef}
+        id={id}
+        type={type}
+        value={value}
+        onChange={onInputChange}
+      />
+    </>
+  );
+}
 
 function App() {
   const stories = [
@@ -94,6 +106,7 @@ function App() {
         id="search"
         value={searchTerm}
         onInputChange={handleSearch}
+        isFocused
       >
         <strong>Search</strong>
       </InputWithLabel>
