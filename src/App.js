@@ -31,21 +31,24 @@ const List = ({ list }) => {
   return list.map(item => <Item key={item.objectID} item={item} />)
 }
 
-const Search = ({ onSearch, searchTerm }) => {
-  
-
-  const handleChange = event => {
-    onSearch(event);
-  };
-
-  return <>
-    <label htmlFor="search">Search: </label>
-    <input id="search" type="text" onChange={handleChange} value={searchTerm} />
-    <p>
-    Searching for <strong>{searchTerm}</strong>.
-    </p>
+const InputWithLabel = ({
+  id,
+  label,
+  value,
+  type = 'text',
+  onInputChange,
+}) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+      &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
   </>
-}
+);
 
 function App() {
   const stories = [
@@ -86,8 +89,13 @@ function App() {
 
   return (
     <div>
-      <h1>Hello {getTitle('React')}</h1>
-      <Search onSearch={handleSearch} searchTerm={searchTerm} />
+      <h1>My Hacker Stories</h1>
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
       <hr />
       <List list={searchedStories} />
     </div>
