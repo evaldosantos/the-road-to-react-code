@@ -150,16 +150,18 @@ function App() {
   });
 
   React.useEffect(() => {
+    if ( searchTerm === '') return;
+
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
 
-    fetch(`${API_ENDPOINT}react`)
+    fetch(`${API_ENDPOINT}${searchTerm}`)
       .then(response => response.json())
       .then(result => {
         dispatchStories({ type: 'STORIES_FETCH_SUCCESS', payload: result.hits });  
       })
       .catch(() => dispatchStories({ type: 'STORIES_FETCH_FAILURE'}));
     
-  }, [])
+  }, [searchTerm])
 
   return (
     <div>
@@ -175,7 +177,7 @@ function App() {
       <hr />
       { stories.isError && <p>Something went wrong ...</p>}
       
-      { stories.isLoading ? <p>Loading ...</p> : <List list={searchedStories} onRemoveItem={handleRemoveStory} /> }
+      { stories.isLoading ? <p>Loading ...</p> : <List list={stories.data} onRemoveItem={handleRemoveStory} /> }
     </div>
   );
 }
