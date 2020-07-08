@@ -1,5 +1,16 @@
 import React from 'react';
 
+const storiesReducer = (state, action) => {
+  switch( action.type ) {
+    case 'SET_STORIES':
+      return action.payload;
+    case 'REMOVE_STORY':
+      return state.filter(story => story.objectID !== action.payload.objectID);
+    default: 
+      throw new Error();
+  }
+}
+
 const useSemiPersistentState = (key, initialState='React') => {
   const [value, setvalue] = React.useState(
     localStorage.getItem(key) || initialState
@@ -98,7 +109,7 @@ function App() {
     }, 2000)
   });
 
-  const [stories, setStories] = React.useState([]);
+  const [stories, dispatchStories] = React.useReducer(storiesReducer, []);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
@@ -110,7 +121,8 @@ function App() {
     const newStories = stories.filter(
       story => item.objectID !== story.objectID
     );
-    setStories(newStories);
+    
+    dispatchStories({ type: 'REMOVE_STORY', payload: item });
   };
 
   const searchedStories = stories.filter(function(story) {
@@ -122,7 +134,7 @@ function App() {
   React.useEffect(() => {
     setIsLoading(true);
     getAsyncStories().then(result => {
-      setStories(result.data.stories);
+      dispatchStories({ type: 'SET_STORIES', payload: result.data.stories });
       setIsLoading(false);
     }).catch(() => setIsError(true));
     
