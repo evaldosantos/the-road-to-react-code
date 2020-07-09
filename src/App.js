@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import storiesReducer from './storiesReducer';
 import useSemiPersistentState from './useSemiPersistentState';
-import InputWithLabel from './InputWithLabel';
+import SearchForm from './SearchForm';
 import List from './List';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
@@ -22,8 +22,10 @@ function App() {
     setSearchTerm(event.target.value);
   };
   
-    const handleSearchSubmit = () => {
+  const handleSearchSubmit = event => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
+
+    event.preventDefault();
   };
 
   const [stories, dispatchStories] = React.useReducer(storiesReducer, {
@@ -52,22 +54,9 @@ function App() {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <InputWithLabel
-        id="search"
-        value={searchTerm}
-        onInputChange={handleSearchInput}
-        isFocused
-      >
-        <strong>Search</strong>
-      </InputWithLabel>
 
-      <button
-        type="button"
-        disabled={!searchTerm}
-        onClick={handleSearchSubmit}
-      >
-        Submit
-      </button>
+      <SearchForm searchTerm={searchTerm} onSearchInput={handleSearchInput} onSearchSubmit={handleSearchSubmit} />
+      
       <hr />
       { stories.isError && <p>Something went wrong ...</p>}
       
