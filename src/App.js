@@ -125,6 +125,18 @@ function App() {
     'React'
   );
 
+  const [url, setUrl] = React.useState(
+    `${API_ENDPOINT}${searchTerm}`
+  )
+
+  const handleSearchInput = event => {
+    setSearchTerm(event.target.value);
+  };
+  
+    const handleSearchSubmit = () => {
+    setUrl(`${API_ENDPOINT}${searchTerm}`);
+  };
+
   const getAsyncStories = () => new Promise((resolve) => {
     setTimeout(() => {
       resolve({ data: { stories: initialStories } })
@@ -173,11 +185,19 @@ function App() {
       <InputWithLabel
         id="search"
         value={searchTerm}
-        onInputChange={handleSearch}
+        onInputChange={handleSearchInput}
         isFocused
       >
         <strong>Search</strong>
       </InputWithLabel>
+
+      <button
+        type="button"
+        disabled={!searchTerm}
+        onClick={handleSearchSubmit}
+      >
+        Submit
+      </button>
       <hr />
       { stories.isError && <p>Something went wrong ...</p>}
       
