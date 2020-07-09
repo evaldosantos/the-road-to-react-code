@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import './App.css';
+
 import storiesReducer from './storiesReducer';
 import useSemiPersistentState from './useSemiPersistentState';
 import SearchForm from './SearchForm';
@@ -52,8 +54,8 @@ function App() {
   }, [handleFetchStories])
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className="container">
+      <h1 className="headline-primary">My Hacker Stories</h1>
 
       <SearchForm searchTerm={searchTerm} onSearchInput={handleSearchInput} onSearchSubmit={handleSearchSubmit} />
       
